@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,6 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 
 const SignUp = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent, userType: string) => {
@@ -23,6 +24,12 @@ const SignUp = () => {
         description: `Welcome to FrameBook! Check your email to verify your ${userType} account.`,
       });
       setLoading(false);
+      // Redirect to appropriate dashboard
+      if (userType === "photographer") {
+        navigate("/photographer-dashboard");
+      } else {
+        navigate("/dashboard");
+      }
     }, 1500);
   };
 

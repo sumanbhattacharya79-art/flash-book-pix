@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,6 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 
 const Login = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -23,6 +24,8 @@ const Login = () => {
         description: "You've successfully logged in.",
       });
       setLoading(false);
+      // Redirect to dashboard (could be client or photographer based on user type)
+      navigate("/dashboard");
     }, 1500);
   };
 
