@@ -14,16 +14,280 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      bookings: {
+        Row: {
+          booking_date: string
+          booking_time: string
+          client_id: string
+          created_at: string
+          id: string
+          location: string | null
+          photographer_id: string | null
+          price: number
+          service_type: Database["public"]["Enums"]["service_type"]
+          special_instructions: string | null
+          status: Database["public"]["Enums"]["booking_status"]
+          updated_at: string
+        }
+        Insert: {
+          booking_date: string
+          booking_time: string
+          client_id: string
+          created_at?: string
+          id?: string
+          location?: string | null
+          photographer_id?: string | null
+          price: number
+          service_type: Database["public"]["Enums"]["service_type"]
+          special_instructions?: string | null
+          status?: Database["public"]["Enums"]["booking_status"]
+          updated_at?: string
+        }
+        Update: {
+          booking_date?: string
+          booking_time?: string
+          client_id?: string
+          created_at?: string
+          id?: string
+          location?: string | null
+          photographer_id?: string | null
+          price?: number
+          service_type?: Database["public"]["Enums"]["service_type"]
+          special_instructions?: string | null
+          status?: Database["public"]["Enums"]["booking_status"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      messages: {
+        Row: {
+          booking_id: string
+          content: string
+          created_at: string
+          id: string
+          read: boolean | null
+          sender_id: string
+        }
+        Insert: {
+          booking_id: string
+          content: string
+          created_at?: string
+          id?: string
+          read?: boolean | null
+          sender_id: string
+        }
+        Update: {
+          booking_id?: string
+          content?: string
+          created_at?: string
+          id?: string
+          read?: boolean | null
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      photo_galleries: {
+        Row: {
+          booking_id: string
+          id: string
+          photo_urls: string[]
+          uploaded_at: string
+        }
+        Insert: {
+          booking_id: string
+          id?: string
+          photo_urls: string[]
+          uploaded_at?: string
+        }
+        Update: {
+          booking_id?: string
+          id?: string
+          photo_urls?: string[]
+          uploaded_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "photo_galleries_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: true
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      photographer_profiles: {
+        Row: {
+          available: boolean | null
+          bio: string | null
+          created_at: string
+          id: string
+          location: string | null
+          portfolio_urls: string[] | null
+          price_per_session: number | null
+          rating: number | null
+          specialty: string | null
+          total_reviews: number | null
+          updated_at: string
+          user_id: string
+          years_experience: number | null
+        }
+        Insert: {
+          available?: boolean | null
+          bio?: string | null
+          created_at?: string
+          id?: string
+          location?: string | null
+          portfolio_urls?: string[] | null
+          price_per_session?: number | null
+          rating?: number | null
+          specialty?: string | null
+          total_reviews?: number | null
+          updated_at?: string
+          user_id: string
+          years_experience?: number | null
+        }
+        Update: {
+          available?: boolean | null
+          bio?: string | null
+          created_at?: string
+          id?: string
+          location?: string | null
+          portfolio_urls?: string[] | null
+          price_per_session?: number | null
+          rating?: number | null
+          specialty?: string | null
+          total_reviews?: number | null
+          updated_at?: string
+          user_id?: string
+          years_experience?: number | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          email: string
+          full_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          email: string
+          full_name?: string | null
+          id: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      reviews: {
+        Row: {
+          booking_id: string
+          client_id: string
+          comment: string | null
+          created_at: string
+          id: string
+          photographer_id: string
+          rating: number
+        }
+        Insert: {
+          booking_id: string
+          client_id: string
+          comment?: string | null
+          created_at?: string
+          id?: string
+          photographer_id: string
+          rating: number
+        }
+        Update: {
+          booking_id?: string
+          client_id?: string
+          comment?: string | null
+          created_at?: string
+          id?: string
+          photographer_id?: string
+          rating?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviews_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: true
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "client" | "photographer" | "admin"
+      booking_status:
+        | "pending"
+        | "confirmed"
+        | "in_progress"
+        | "completed"
+        | "cancelled"
+      service_type:
+        | "corporate_events"
+        | "product_photography"
+        | "real_estate"
+        | "weddings"
+        | "portraits"
+        | "other"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +414,23 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["client", "photographer", "admin"],
+      booking_status: [
+        "pending",
+        "confirmed",
+        "in_progress",
+        "completed",
+        "cancelled",
+      ],
+      service_type: [
+        "corporate_events",
+        "product_photography",
+        "real_estate",
+        "weddings",
+        "portraits",
+        "other",
+      ],
+    },
   },
 } as const
