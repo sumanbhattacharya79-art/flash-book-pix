@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,31 +6,58 @@ import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Camera, ArrowLeft, Mail, Lock, User, Building } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 
 const SignUp = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { signUp, user, userRole } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [clientData, setClientData] = useState({ name: "", email: "", password: "" });
+  const [photographerData, setPhotographerData] = useState({ name: "", email: "", password: "" });
 
-  const handleSubmit = async (e: React.FormEvent, userType: string) => {
-    e.preventDefault();
-    setLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      toast({
-        title: "Account created!",
-        description: `Welcome to FrameBook! Check your email to verify your ${userType} account.`,
-      });
-      setLoading(false);
-      // Redirect to appropriate dashboard
-      if (userType === "photographer") {
+  useEffect(() => {
+    if (user && userRole) {
+      if (userRole === "photographer") {
         navigate("/photographer-dashboard");
       } else {
         navigate("/dashboard");
       }
-    }, 1500);
+    }
+  }, [user, userRole, navigate]);
+
+  const handleSubmit = async (e: React.FormEvent, userType: "client" | "photographer") => {
+    e.preventDefault();
+    setLoading(true);
+    
+    const data = userType === "client" ? clientData : photographerData;
+    
+    if (data.password.length < 6) {
+      toast({
+        title: "Error",
+        description: "Password must be at least 6 characters",
+        variant: "destructive"
+      });
+      setLoading(false);
+      return;
+    }
+
+    const { error } = await signUp(data.email, data.password, data.name, userType);
+    setLoading(false);
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive"
+      });
+    } else {
+      toast({
+        title: "Account created!",
+        description: `Welcome to FrameBook!`,
+      });
+    }
   };
 
   return (
@@ -62,15 +89,14 @@ const SignUp = () => {
                   <Label htmlFor="client-name">Full Name</Label>
                   <div className="relative">
                     <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input id="client-name" placeholder="John Doe" className="pl-10" required />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="client-company">Company Name (Optional)</Label>
-                  <div className="relative">
-                    <Building className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input id="client-company" placeholder="Your Company" className="pl-10" />
+                    <Input 
+                      id="client-name" 
+                      placeholder="John Doe" 
+                      className="pl-10" 
+                      required 
+                      value={clientData.name}
+                      onChange={(e) => setClientData({...clientData, name: e.target.value})}
+                    />
                   </div>
                 </div>
 
@@ -78,7 +104,15 @@ const SignUp = () => {
                   <Label htmlFor="client-email">Email</Label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input id="client-email" type="email" placeholder="you@example.com" className="pl-10" required />
+                    <Input 
+                      id="client-email" 
+                      type="email" 
+                      placeholder="you@example.com" 
+                      className="pl-10" 
+                      required 
+                      value={clientData.email}
+                      onChange={(e) => setClientData({...clientData, email: e.target.value})}
+                    />
                   </div>
                 </div>
 
@@ -86,7 +120,15 @@ const SignUp = () => {
                   <Label htmlFor="client-password">Password</Label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input id="client-password" type="password" placeholder="••••••••" className="pl-10" required />
+                    <Input 
+                      id="client-password" 
+                      type="password" 
+                      placeholder="••••••••" 
+                      className="pl-10" 
+                      required 
+                      value={clientData.password}
+                      onChange={(e) => setClientData({...clientData, password: e.target.value})}
+                    />
                   </div>
                 </div>
 
@@ -106,15 +148,14 @@ const SignUp = () => {
                   <Label htmlFor="photo-name">Full Name</Label>
                   <div className="relative">
                     <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input id="photo-name" placeholder="Jane Smith" className="pl-10" required />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="photo-business">Business Name</Label>
-                  <div className="relative">
-                    <Building className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input id="photo-business" placeholder="Your Photography Studio" className="pl-10" required />
+                    <Input 
+                      id="photo-name" 
+                      placeholder="Jane Smith" 
+                      className="pl-10" 
+                      required 
+                      value={photographerData.name}
+                      onChange={(e) => setPhotographerData({...photographerData, name: e.target.value})}
+                    />
                   </div>
                 </div>
 
@@ -122,7 +163,15 @@ const SignUp = () => {
                   <Label htmlFor="photo-email">Email</Label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input id="photo-email" type="email" placeholder="you@example.com" className="pl-10" required />
+                    <Input 
+                      id="photo-email" 
+                      type="email" 
+                      placeholder="you@example.com" 
+                      className="pl-10" 
+                      required 
+                      value={photographerData.email}
+                      onChange={(e) => setPhotographerData({...photographerData, email: e.target.value})}
+                    />
                   </div>
                 </div>
 
@@ -130,7 +179,15 @@ const SignUp = () => {
                   <Label htmlFor="photo-password">Password</Label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input id="photo-password" type="password" placeholder="••••••••" className="pl-10" required />
+                    <Input 
+                      id="photo-password" 
+                      type="password" 
+                      placeholder="••••••••" 
+                      className="pl-10" 
+                      required 
+                      value={photographerData.password}
+                      onChange={(e) => setPhotographerData({...photographerData, password: e.target.value})}
+                    />
                   </div>
                 </div>
 
