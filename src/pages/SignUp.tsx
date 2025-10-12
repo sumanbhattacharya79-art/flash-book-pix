@@ -8,6 +8,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Camera, ArrowLeft, Mail, Lock, User, Building } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { z } from "zod";
+
+const signUpSchema = z.object({
+  email: z.string().trim().email("Invalid email address").max(255, "Email is too long"),
+  password: z.string().min(8, "Password must be at least 8 characters").max(100, "Password is too long"),
+  fullName: z.string().trim().min(1, "Name is required").max(100, "Name is too long"),
+});
 
 const SignUp = () => {
   const { toast } = useToast();
@@ -29,21 +36,33 @@ const SignUp = () => {
 
   const handleSubmit = async (e: React.FormEvent, userType: "client" | "photographer") => {
     e.preventDefault();
-    setLoading(true);
     
     const data = userType === "client" ? clientData : photographerData;
     
-    if (data.password.length < 6) {
+    // Validate input before submission
+    const validation = signUpSchema.safeParse({
+      email: data.email,
+      password: data.password,
+      fullName: data.name,
+    });
+    
+    if (!validation.success) {
+      const firstError = validation.error.errors[0];
       toast({
-        title: "Error",
-        description: "Password must be at least 6 characters",
+        title: "Validation Error",
+        description: firstError.message,
         variant: "destructive"
       });
-      setLoading(false);
       return;
     }
-
-    const { error } = await signUp(data.email, data.password, data.name, userType);
+    
+    setLoading(true);
+    const { error } = await signUp(
+      validation.data.email,
+      validation.data.password,
+      validation.data.fullName,
+      userType
+    );
     setLoading(false);
 
     if (error) {

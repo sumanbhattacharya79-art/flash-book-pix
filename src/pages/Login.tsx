@@ -8,6 +8,12 @@ import { Separator } from "@/components/ui/separator";
 import { Camera, ArrowLeft, Mail, Lock } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { z } from "zod";
+
+const loginSchema = z.object({
+  email: z.string().trim().email("Invalid email address").max(255, "Email is too long"),
+  password: z.string().min(6, "Password must be at least 6 characters").max(100, "Password is too long"),
+});
 
 const Login = () => {
   const { toast } = useToast();
@@ -29,9 +35,22 @@ const Login = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     
-    const { error } = await signIn(email, password);
+    // Validate input before submission
+    const validation = loginSchema.safeParse({ email, password });
+    
+    if (!validation.success) {
+      const firstError = validation.error.errors[0];
+      toast({
+        title: "Validation Error",
+        description: firstError.message,
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    setLoading(true);
+    const { error } = await signIn(validation.data.email, validation.data.password);
     setLoading(false);
 
     if (error) {
