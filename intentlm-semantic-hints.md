@@ -1,8 +1,15 @@
 # intentLM semantic event suggestions
 
-No high-value action hooks detected automatically.
+Auto-detected from your repo. Apply in the PR or follow-up commit.
 
-Add manually where needed:
-- `data-ilm-event="UPGRADE_CTA_CLICK"` on upgrade buttons
-- `intentLM.capture('DATA_EXPORT_INITIATED')` in export handlers
-- Server webhooks for login/payment — see docs/server-events.md
+| Intent label | Suggestion | File |
+| --- | --- | --- |
+| FIRST_CORE_ACTION | `intentLM.captureCoreAction()` after milestone | `public/intentlm/intentlm.iife.js` |
+
+## Layer 3: declarative clicks (no JS handler change)
+
+```html
+<button data-ilm-event="UPGRADE_CTA_CLICK">Upgrade</button>
+```
+
+See `docs/server-events.md` for Stripe / Auth0 / Supabase server templates.
