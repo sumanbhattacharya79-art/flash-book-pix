@@ -1,16 +1,17 @@
+import { ilmAnalyticsGranted } from './src/lib/intentlm-consent'
+
 /**
  * intentLM SDK configuration.
  * useRemoteConfig: load patterns/views from dashboard via same-origin proxy.
- * Proxy: /api/intentlm/sdk/instrumentation → Config API (see vercel.json).
- * Wire consentCheck to your CMP — see dashboard Setup → Compliance.
+ * Proxy: /api/intentlm/sdk/instrumentation → Config API (local: Vite proxy / Next rewrites; prod: vercel.json).
+ * consentCheck defaults open for setup — wire CMP before production.
  */
 export const intentLMConfig = {
-  apiKey: 'ilm_live_gmn62weu9rst856vn45zqfq4nt93a33u',
+  apiKey: 'ilm_live_bewogxwife4qq5rge26nlb79db0p2a77',
+  endpoint: 'https://intentlm-dev-inference-krxe5fa7dq-uw.a.run.app/v1',
   useRemoteConfig: true,
   configBaseUrl: '/api/intentlm',
-  consentCheck: () =>
-    typeof window !== 'undefined' &&
-    localStorage.getItem('cookie-consent') === 'accepted',
+  consentCheck: () => typeof window !== 'undefined' && ilmAnalyticsGranted(),
   enableVisitorPersistence: true,
   patterns: {
   "/Booking*": 1536,

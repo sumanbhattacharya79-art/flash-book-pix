@@ -1,0 +1,2 @@
+# intentLM Config API proxy (same-origin, no CORS)
+/api/intentlm/*  https://intentlm-dev-config-krxe5fa7dq-uw.a.run.app/v1/:splat  200
