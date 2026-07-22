@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/intentlm/:path*",
+      "destination": "https://intentlm-dev-config-krxe5fa7dq-uw.a.run.app/v1/:path*"
+    }
+  ]
+}

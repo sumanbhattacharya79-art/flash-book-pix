@@ -8,6 +8,13 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    proxy: {
+      "/api/intentlm": {
+        target: "https://intentlm-dev-config-krxe5fa7dq-uw.a.run.app",
+        changeOrigin: true,
+        rewrite: (p) => p.replace(/^\/api\/intentlm/, "/v1"),
+      },
+    },
   },
   plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
   resolve: {

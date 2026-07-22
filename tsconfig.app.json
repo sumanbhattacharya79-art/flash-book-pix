@@ -26,5 +26,5 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", ".intentlm.config.ts", ".intentlm.manifest.ts"]
 }
