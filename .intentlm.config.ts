@@ -7,7 +7,7 @@ import { ilmAnalyticsGranted } from './src/lib/intentlm-consent'
  * consentCheck defaults open for setup — wire CMP before production.
  */
 export const intentLMConfig = {
-  apiKey: 'ilm_live_bewogxwife4qq5rge26nlb79db0p2a77',
+  apiKey: 'ilm_live_ubkuua9eogku9g1klxi2tlokgpwkx4px',
   endpoint: 'https://intentlm-dev-inference-krxe5fa7dq-uw.a.run.app/v1',
   useRemoteConfig: true,
   configBaseUrl: '/api/intentlm',
