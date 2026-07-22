@@ -1,0 +1,21 @@
+{
+  "version": "2026-06-17",
+  "vendor": "intentLM",
+  "cookies": [
+    {
+      "name": "_ilm_vid",
+      "provider": "intentLM",
+      "purpose": "Anonymous cross-session behavioural sequencing for intent classification. Random UUID only \u2014 no PII or raw URLs.",
+      "category": "analytics",
+      "duration_days": 365,
+      "type": "first-party"
+    }
+  ],
+  "notes": "Import into your CMP admin. Required for cross-session visitor history (_ilm_vid).",
+  "personalization": {
+    "required_when": "Routing classified intent to your chat agent, in-app offers, or intentlm-actions",
+    "cmp_category": "personalization",
+    "gate": "__ILM_ON_INTENT__",
+    "notes": "Enable a Personalization category in your CMP (IAB TCF Purpose 6). Wire ilmPersonalizationGranted() before handling intent callbacks."
+  }
+}

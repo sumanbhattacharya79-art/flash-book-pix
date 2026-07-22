@@ -16,6 +16,14 @@ export const intentLMManifest = {
     "/SignUp*": 111
   },
   "views": {
-  "route.home": 101
-}
+    "route.booking": 801,
+    "route.checkout": 203,
+    "route.dashboard": 805,
+    "route.home": 101,
+    "route.login": 801,
+    "route.photographer-dashboard": 805,
+    "route.signup": 801,
+    "route.wildcard": 801,
+    "route.post-booking.bookingId": 801
+  }
 } as const
