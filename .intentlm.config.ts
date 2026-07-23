@@ -11,29 +11,19 @@ export const intentLMConfig = {
   endpoint: 'https://intentlm-dev-inference-krxe5fa7dq-uw.a.run.app/v1',
   useRemoteConfig: true,
   configBaseUrl: '/api/intentlm',
-  // FrameBook cookie banner: Accept → localStorage cookie-consent=accepted
   consentCheck: () => typeof window !== 'undefined' && ilmAnalyticsGranted(),
   enableVisitorPersistence: true,
   patterns: {
-  "/Booking*": 1536,
-  "/Checkout*": 203,
-  "/ClientDashboard*": 805,
-  "/Index*": 105,
-  "/Login*": 110,
-  "/NotFound*": 105,
-  "/PhotographerDashboard*": 805,
-  "/PostBooking*": 1536,
-  "/SignUp*": 111
+  "/": 101,
+  "/booking*": 1536,
+  "/checkout*": 203,
+  "/dashboard*": 805,
+  "/login*": 110,
+  "/photographer-dashboard*": 805,
+  "/signup*": 111
 },
   views: {
-  "route.booking": 801,
-  "route.checkout": 203,
-  "route.dashboard": 805,
-  "route.home": 101,
-  "route.login": 801,
-  "route.photographer-dashboard": 805,
-  "route.signup": 801,
   "route.wildcard": 801,
-  "route.post-booking.bookingId": 801
+  "route.post-booking.bookingid": 1536
 },
 }
