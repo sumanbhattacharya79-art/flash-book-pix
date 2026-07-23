@@ -2,21 +2,24 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Cookie, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-const CONSENT_KEY = "cookie-consent";
+import {
+  COOKIE_CONSENT_KEY,
+  notifyIntentLMConsentUpdated,
+} from "@/lib/intentlm-consent";
 
 const CookieConsent = () => {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    if (!localStorage.getItem(CONSENT_KEY)) {
+    if (!localStorage.getItem(COOKIE_CONSENT_KEY)) {
       setVisible(true);
     }
   }, []);
 
   const setConsent = (value: "accepted" | "declined") => {
-    localStorage.setItem(CONSENT_KEY, value);
+    localStorage.setItem(COOKIE_CONSENT_KEY, value);
     setVisible(false);
+    notifyIntentLMConsentUpdated();
   };
 
   if (!visible) return null;

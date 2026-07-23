@@ -11,6 +11,7 @@ export const intentLMConfig = {
   endpoint: 'https://intentlm-dev-inference-krxe5fa7dq-uw.a.run.app/v1',
   useRemoteConfig: true,
   configBaseUrl: '/api/intentlm',
+  // FrameBook cookie banner: Accept → localStorage cookie-consent=accepted
   consentCheck: () => typeof window !== 'undefined' && ilmAnalyticsGranted(),
   enableVisitorPersistence: true,
   patterns: {
