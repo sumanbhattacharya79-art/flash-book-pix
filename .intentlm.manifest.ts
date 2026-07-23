@@ -5,25 +5,16 @@
  */
 export const intentLMManifest = {
   "patterns": {
-    "/Booking*": 1536,
-    "/Checkout*": 203,
-    "/ClientDashboard*": 805,
-    "/Index*": 105,
-    "/Login*": 110,
-    "/NotFound*": 105,
-    "/PhotographerDashboard*": 805,
-    "/PostBooking*": 1536,
-    "/SignUp*": 111
+    "/": 101,
+    "/booking*": 1536,
+    "/checkout*": 203,
+    "/dashboard*": 805,
+    "/login*": 110,
+    "/photographer-dashboard*": 805,
+    "/signup*": 111
   },
   "views": {
-    "route.booking": 801,
-    "route.checkout": 203,
-    "route.dashboard": 805,
-    "route.home": 101,
-    "route.login": 801,
-    "route.photographer-dashboard": 805,
-    "route.signup": 801,
     "route.wildcard": 801,
-    "route.post-booking.bookingId": 801
+    "route.post-booking.bookingid": 1536
   }
 } as const
